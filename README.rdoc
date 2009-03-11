@@ -1,0 +1,7 @@
+= rails-caddy
+
+A developer's QA "caddy" that aids in QA'ing, debugging, and otherwise navigating your application during development and/or QA.
+
+== Copyright
+
+Copyright (c) 2009 John Trupiano. See LICENSE for details.
