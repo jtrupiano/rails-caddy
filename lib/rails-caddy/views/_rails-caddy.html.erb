@@ -1,0 +1,34 @@
+<div id="railsCaddy">
+	
+	<a href="#" id="railsCaddyTab"><img src="../images/slide-button.gif" alt="caddy" title="caddy" /></a>
+	
+	<div id="railsCaddyContents" style="display:none;">
+		<div id="railsCaddyContentsInner">
+		  <div id="railsCaddySession">
+		    <h2>Session</h2>
+		  </div>
+		  
+		  <div id="railsCaddyTimecop">
+		    <h2>Timecop</h2>
+		    <p>The time is <%= Time.now.to_s(:db) %></p>
+        <% form_remote_tag :url => update_time_path do -%>
+          <%= submit_tag "Time Travel" %>
+          <% %w(year month day hour min sec).each do |field| -%>
+            <%= text_field_tag field, Time.now.send(field), :size => 4 %>
+          <% end -%>
+        <% end -%>
+        <%= link_to_remote "Reset", :url => reset_time_path %>
+		  </div>
+		  
+		  <div id="railsCaddyEmail">
+		    <h2>Sanitize Email</h2>
+		  </div>
+		  
+		  <div id="railsCaddyStats">
+		    <h2>Stats</h2>
+		  </div>
+		  
+		</div>
+	</div>
+	
+</div>
