@@ -11,7 +11,7 @@ class RailsCaddyTest < Test::Unit::TestCase
     end
     
     should "raise exception when initializing RailsCaddy" do
-      assert_raise(SessionControllerNotFoundError) { RailsCaddy.init! }
+      assert_raise(RailsCaddy::SessionControllerNotFoundError) { RailsCaddy.init! }
     end
   end
   
@@ -21,27 +21,46 @@ class RailsCaddyTest < Test::Unit::TestCase
       class ::ApplicationController < ActionController::Base; end
     end
     
-    context "session has not been initialized" do
+    context "session has not been initialized and is nil" do
       setup do
-        ::ApplicationController.class_eval do
-          session nil
-        end
+        stub(ApplicationController).session { nil }
       end
       
       should "raise SessionUninitializedError when initializing RailsCaddy" do
-        assert_raise(SessionUninitializedError) { RailsCaddy.init! }
+        assert_raise(RailsCaddy::SessionUninitializedError) { RailsCaddy.init! }
+      end
+    end
+    
+    context "session has not been initialized and is an array with a single empty hash as its entry" do
+      setup do
+        stub(ApplicationController).session { [{}] }
+      end
+      
+      should "raise SessionUninitializedError when initializing RailsCaddy" do
+        assert_raise(RailsCaddy::SessionUninitializedError) { RailsCaddy.init! }
       end
     end
     
     context "session has been initialized" do
       setup do
-        ::ApplicationController.class_eval do
-          session :session_key => 'blah'
-        end
+        stub(ApplicationController).session { [{:session_key => 'blah'}]}
       end
       
       should "not raise exception when initializing RailsCaddy" do
         assert_nothing_raised { RailsCaddy.init! }
+      end
+      
+      context "RailsCaddy has been initialized" do
+        
+        setup do
+          RailsCaddy.init!
+        end
+      
+        should "add rails-caddy/views to the view_path" do
+          path = File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "rails-caddy", "views"))
+          assert ActionController::Base.view_paths.include?(path)
+        end
+
       end
       
     end
