@@ -5,25 +5,26 @@ require 'actionpack'
 require 'action_controller'
 
 require 'timecop'
-require "rails-caddy/timecop/controller_methods"
+
+class ApplicationController < ActionController::Base; end
 
 class RailsCaddyControllerTest < ActionController::TestCase
 
-  # context "Session has been activated in ApplicationController" do
-  #   should "raise exception when loading RailsCaddyController" do
-  #     assert_raise(NameError) { require 'rails-caddy/controllers/rails-caddy_controller' }
-  #   end
-  # end
-  # 
-  # context "Session has been activated in ApplicationController" do
-  # 
-  #   setup do
-  #     require 'sample_application_controller'
-  #   end
-  #   
-  #   should "not raise exception when loading RailsCaddyController" do
-  #     assert_nothing_raised { require 'rails-caddy/controllers/rails-caddy_controller' }
-  #   end
-  # end
+  context "RailsCaddy has been initialized" do
+    
+    setup do
+      stub(ApplicationController).session { [{:session_key => "blah"}] }
+      RailsCaddy.init!
+    end
+    
+    should "recognize RailsCaddyController constant" do
+      assert Object.const_defined?(:RailsCaddyController)
+    end
+    
+    # context ""
+    # should "respond to #timecop_update" do
+    #   assert 
+    
+  end
   
 end

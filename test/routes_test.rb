@@ -11,16 +11,16 @@ class RoutesTest < Test::Unit::TestCase
   context "Routes have been loaded" do
   
     setup do
-      require "rails-caddy/timecop/routes"
+      require "rails-caddy/routes"
       def clean_backtrace; end
     end
   
-    should "recognize route update_time_path" do
-      assert_recognizes({:controller => 'timecop', :action => 'update'}, '/timecop/update')
+    should "recognize route timecop_update_path" do
+      assert_recognizes({:controller => 'rails-caddy', :action => 'update'}, '/rails-caddy/timecop_update')
     end
   
-    should "recognize route reset_time_path" do
-      assert_recognizes({:controller => 'timecop', :action => 'reset'}, '/timecop/reset')      
+    should "recognize route timecop_reset_path" do
+      assert_recognizes({:controller => 'rails-caddy', :action => 'reset'}, '/rails-caddy/timecop_reset')      
     end
   end
   

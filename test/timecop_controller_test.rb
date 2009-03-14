@@ -5,21 +5,20 @@ require 'actionpack'
 require 'action_controller'
 
 require 'timecop'
-require "rails-caddy/timecop/controller_methods"
+require "rails-caddy/controllers/timecop_controller"
 
-class TimecopTest < Test::Unit::TestCase
+class TestTimecopController < ActionController::Base
+  include TimecopController
+end
+
+class TimecopControllerTest < Test::Unit::TestCase
   include ActionController::Assertions::RoutingAssertions
   
-  context "ActionController::Base has been extended by Timecop::ControllerMethods" do
+  context "TestTimecopController has been extended by TimecopController" do
     setup do
-      ActionController::Base.send(:include, TimecopControllerMethods)
-      @controller = ActionController::Base.new
+      @controller = TestTimecopController.new
     end
 
-    should "add handle_timecop_offset as an around_filter" do
-      assert ActionController::Base.filter_chain.include?(:handle_timecop_offset)
-    end
-    
     context "session has been set" do
       setup do
         @travel_to = Time.local(2009, 1, 1)

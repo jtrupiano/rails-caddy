@@ -1,6 +1,5 @@
 # Defines extensions applied to ActionController::Base to support our time travel
-
-module TimecopControllerMethods
+module ActionControllerExtensions
   
   def self.included(base)
     base.class_eval do

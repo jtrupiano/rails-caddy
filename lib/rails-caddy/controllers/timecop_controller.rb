@@ -1,4 +1,4 @@
-module RailsCaddyController
+module TimecopController
   
   def self.included(base)
     base.class_eval do
