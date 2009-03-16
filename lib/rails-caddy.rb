@@ -13,8 +13,8 @@ class RailsCaddy
     
     # Find the controller responsible for establishing session
     @@session_controller = @@rails_caddy.send(:find_session_controller)
-	  if @@session_controller.session.nil? || (@@session_controller.session.is_a?(Array) && !@@session_controller.session.any? {|hsh| hsh.is_a?(Hash) && !hsh[:session_key].nil?})
-      raise SessionUninitializedError, "session does not appear to be established for #{@@session_controller.class}. session: #{@@session_controller.session.inspect}"
+	  if @@session_controller.session_options[:key].nil?
+      raise SessionUninitializedError, "session does not appear to be established for #{@@session_controller.class}. session: #{@@session_controller.session_options.inspect}"
 	  end
 	  
 	  # Now that we've found the controller responsible for establishing session, we can establish that our 

@@ -12,7 +12,6 @@ class TestTimecopController < ActionController::Base
 end
 
 class TimecopControllerTest < Test::Unit::TestCase
-  include ActionController::Assertions::RoutingAssertions
   
   context "TestTimecopController has been extended by TimecopController" do
     setup do

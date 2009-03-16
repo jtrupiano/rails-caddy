@@ -18,22 +18,14 @@ class RailsCaddyTest < Test::Unit::TestCase
   context "ApplicationController has been defined" do
   
     setup do
-      class ::ApplicationController < ActionController::Base; end
-    end
-    
-    context "session has not been initialized and is nil" do
-      setup do
-        stub(ApplicationController).session { nil }
-      end
-      
-      should "raise SessionUninitializedError when initializing RailsCaddy" do
-        assert_raise(RailsCaddy::SessionUninitializedError) { RailsCaddy.init! }
+      class ::ApplicationController < ActionController::Base
+        session_options[:key] = nil
       end
     end
     
-    context "session has not been initialized and is an array with a single empty hash as its entry" do
+    context "session has not been initialized, but the key is nil" do
       setup do
-        stub(ApplicationController).session { [{}] }
+        ::ApplicationController.session_options[:key] = nil
       end
       
       should "raise SessionUninitializedError when initializing RailsCaddy" do
@@ -43,7 +35,7 @@ class RailsCaddyTest < Test::Unit::TestCase
     
     context "session has been initialized" do
       setup do
-        stub(ApplicationController).session { [{:session_key => 'blah'}]}
+        ::ApplicationController.session_options[:key] = "blah"
       end
       
       should "not raise exception when initializing RailsCaddy" do
@@ -60,6 +52,8 @@ class RailsCaddyTest < Test::Unit::TestCase
           path = File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "rails-caddy", "views"))
           assert ActionController::Base.view_paths.include?(path)
         end
+        
+        should "require (and ultimately define) RailsCaddyController"
 
       end
       

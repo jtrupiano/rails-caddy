@@ -9,13 +9,13 @@ module TimecopController
   end
 
   module Actions
-    def update
+    def timecop_update
       year, month, day, hour, min, sec = params[:year], params[:month], params[:day], params[:hour], params[:min], params[:sec]
       session[:timecop_adjusted_time] = Time.local(year, month, day, hour, min, sec)
       render :status => 200, :nothing => true
     end
   
-    def reset
+    def timecop_reset
       session[:timecop_adjusted_time] = nil
       render :status => 200, :nothing => true
     end
