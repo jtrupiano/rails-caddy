@@ -1,23 +1,119 @@
+<style type="text/css">
+  #railsCaddy {
+    text-align: left;
+  	position: absolute;
+  	width: auto;
+  	height: auto;
+  	top: 100px;
+  	left: 0px;
+  	background-image: url(images/background.gif);
+  	background-position: top left;
+  	background-repeat: repeat-y;
+  }
+
+  #railsCaddyTab {
+  	float: left;
+  	height: 137px;
+  	width: 28px;
+  }
+
+  #railsCaddyTab img {
+    border: none;
+  }
+
+  #railsCaddyContents {
+  	float: left;
+  	overflow: hidden !important;
+  	width: 200px;
+  }
+
+  #railsCaddyContentsInner {
+  	width: 200px;
+  	margin-top: 30px;
+  	font-size: 12px;
+  }
+
+  #railsCaddyContentsInner > div {
+    border: solid 1px red;
+  }
+
+  #railsCaddyContentsInner h2 {
+  	margin: 0px 0px 3px 0px;
+  	padding: 2px;
+  	background-color: #CC3400;
+  	color: #FFFFFF;
+  	font-size: 14px;
+  }
+</style>
+
+<script type="text/javascript">
+  var RailsCaddy = {
+
+    isExtended: 0,
+
+    slideSideBar: function() {
+
+    	new Effect.toggle('railsCaddyContents', 'blind', {scaleX: 'true', scaleY: 'true;', scaleContent: false});
+
+    	if (RailsCaddy.isExtended == 0) {
+    		$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/(\.[^.]+)$/, '-active$1');
+
+    		new Effect.Fade('railsCaddyContents', { duration:1.0, from:0.0, to:1.0 });
+
+    		RailsCaddy.isExtended++;
+    	}
+    	else {
+    		$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/-active(\.[^.]+)$/, '$1');
+
+    		new Effect.Fade('railsCaddyContents', { duration:1.0, from:1.0, to:0.0 });
+
+    		RailsCaddy.isExtended=0;
+    	}
+
+    },
+
+    init: function() {
+    	Event.observe('railsCaddyTab', 'click', RailsCaddy.slideSideBar, true);
+    },
+
+    scroll: function() {
+      $('railsCaddy').style.top = (window.scrollY + 100) + "px";
+    }
+  };
+
+  if (Event.observe === undefined) {
+    alert("It appears that the Prototype library has not been loaded.  rails_caddy currently requires Prototype.");
+  } else {
+    Event.observe(window, 'load',   RailsCaddy.init,   true);
+    Event.observe(window, 'scroll', RailsCaddy.scroll, true);
+  }
+</script>
+
 <div id="railsCaddy">
 	
 	<a href="#" id="railsCaddyTab"><img src="../images/slide-button.gif" alt="caddy" title="caddy" /></a>
 	
-	<div id="railsCaddyContents" style="display:none;">
+	<div id="railsCaddyContents">
 		<div id="railsCaddyContentsInner">
 		  <div id="railsCaddySession">
 		    <h2>Session</h2>
+		    <% session.data.keys.each do |key| -%>
+          <span><%= h(key) %>: <strong>&nbsp;<%= h(session[key] || "nil") %></strong></span><br/>
+        <% end -%>
 		  </div>
 		  
 		  <div id="railsCaddyTimecop">
 		    <h2>Timecop</h2>
 		    <p>The time is <%= Time.now.to_s(:db) %></p>
         <% form_remote_tag :url => timecop_update_path do -%>
-          <%= submit_tag "Time Travel" %>
           <% %w(year month day hour min sec).each do |field| -%>
-            <%= text_field_tag field, Time.now.send(field), :size => 4 %>
+            <%= text_field_tag field, Time.now.send(field), :size => (field == "year" ? 3 : 1) %>
           <% end -%>
+          <p>
+            <%= submit_tag "Time Travel" %>
+            <%= button_to_remote "Reset", :url => timecop_reset_path %>
+          </p>
         <% end -%>
-        <%= link_to_remote "Reset", :url => timecop_reset_path %>
 		  </div>
 		  
 		  <div id="railsCaddyEmail">

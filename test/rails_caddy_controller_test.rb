@@ -32,9 +32,6 @@ end
 # Define RailsCaddyController
 RailsCaddy.init!
 
-# Load in the new routes
-require 'rails-caddy/routes'
-
 class RailsCaddyControllerTest < ActionController::TestCase
   tests RailsCaddyController
   
@@ -52,6 +49,12 @@ class RailsCaddyControllerTest < ActionController::TestCase
       post :timecop_update, {:year => 2008, :month => 12, :day => 1}
       assert_response :success
       assert_equal Time.local(2008, 12, 1), session[:timecop_adjusted_time]
+    end
+    
+    should "respond to #timecop_reset" do
+      post :timecop_reset
+      assert_response :success
+      assert_equal nil, session[:timecop_adjusted_time]      
     end
     
   end
