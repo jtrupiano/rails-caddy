@@ -1,15 +1,22 @@
 require 'test_helper'
+
+# We need ActionPack loaded to test this out
+require 'actionpack'
+require 'action_controller'
+
 require 'rails-caddy'
 
 class RailsCaddyTest < Test::Unit::TestCase
   
-  context "ApplicationController has not been defined" do
-    
-    setup do
-      # There's no guarantee which order these are run in, so we'll just remove it from the ObjectSpace altogether
-      Object.send(:remove_const, :ApplicationController) if Object.const_defined?(:ApplicationController)
+  def setup
+    # There's no guarantee which order these are run in, so we'll just remove it from the ObjectSpace altogether
+    [:ApplicationController, :RailsCaddyController].each do |cont|
+      Object.send(:remove_const, cont) if Object.const_defined?(cont)
     end
     
+  end
+  
+  context "ApplicationController has not been defined" do    
     should "raise exception when initializing RailsCaddy" do
       assert_raise(RailsCaddy::SessionControllerNotFoundError) { RailsCaddy.init! }
     end

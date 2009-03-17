@@ -9,6 +9,7 @@ begin
     gem.email = "jtrupiano@gmail.com"
     gem.homepage = "http://github.com/jtrupiano/rails-caddy"
     gem.authors = ["John Trupiano"]
+    gem.add_dependency "timecop", "~> 0.2.0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError

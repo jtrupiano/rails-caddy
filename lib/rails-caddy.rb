@@ -1,7 +1,8 @@
-
+require 'timecop'
 require 'rails-caddy/errors'
 require 'rails-caddy/controllers/action_controller_extensions'
 require 'rails-caddy/controllers/timecop_controller'
+require 'rails-caddy/helpers/rails_caddy_helper'
 
 class RailsCaddy
   
@@ -26,7 +27,7 @@ class RailsCaddy
 	  Object.const_set("RailsCaddyController", c)
 	  
 	  # Now let's add our routes
-	  
+	  require 'rails-caddy/routes'
 	  
     # Lastly, let's add our views to the load path...
     ActionController::Base.append_view_path(File.expand_path(File.join(File.dirname(__FILE__), "rails-caddy", "views")))
