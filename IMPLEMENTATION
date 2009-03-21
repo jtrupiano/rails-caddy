@@ -1,0 +1,4 @@
+
+There are some primary issues here.  First, the Timecop module needs to hook into ActionController::Base to establish the around_filter.  Secondly, we need to expose a separate controller to actually field the #update and #reset actions.
+
+Other modules should probably hook in in a similar fashion.
