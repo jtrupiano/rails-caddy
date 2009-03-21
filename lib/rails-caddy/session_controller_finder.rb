@@ -7,10 +7,10 @@ class SessionControllerFinder
     end
     
     candidate = ApplicationController
-    if candidate.session_options[:key].nil?
-      raise RailsCaddy::SessionUninitializedError, 
-        "session does not appear to be established for #{candidate.class}. session: #{candidate.session_options.inspect}"
-    end
+    # if candidate.session_options[:key].nil?
+    #   raise RailsCaddy::SessionUninitializedError, 
+    #     "session does not appear to be established for #{candidate.class}. session: #{candidate.session_options.inspect}"
+    # end
     
     candidate
   end
