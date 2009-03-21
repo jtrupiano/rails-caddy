@@ -14,7 +14,8 @@ class RailsCaddy
 	  require 'rails-caddy/controllers/rails_caddy_controller'
 	  
 	  # Now let's add our routes (only execute in 2.3.x)
-	  if ActionController::Routing.const_defined?(:Routes)
+	  version = Object.const_defined?(:RAILS_GEM_VERSION) ? RAILS_GEM_VERSION : "2.3.2"
+	  if version =~ /^2\.3/
 	    ActionController::Routing::Routes.draw do |map|
 	      define_routes!(map)
 	    end

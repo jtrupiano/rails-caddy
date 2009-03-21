@@ -7,7 +7,6 @@ module ActionController
       def draw
         draw_without_rails_caddy_routes do |map|
           RailsCaddy.define_routes!(map)
-          
           yield map if block_given?
         end
       end
