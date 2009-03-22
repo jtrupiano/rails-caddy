@@ -42,6 +42,15 @@
   	color: #FFFFFF;
   	font-size: 14px;
   }
+  
+  #railsCaddySession p {
+    margin-top: 0px;
+    margin-bottom: 4px;
+  }
+  
+  #railsCaddySession p strong {
+    font-size: 110%;
+  }
 </style>
 
 <script type="text/javascript">
@@ -96,7 +105,10 @@
 		  <div id="railsCaddySession">
 		    <h2>Session</h2>
 		    <% session.data.keys.each do |key| -%>
-          <span><%= h(key) %>: <strong>&nbsp;<%= h(session[key] || "nil") %></strong></span><br/>
+          <p>
+            <%= h(key) %><br />
+            <strong><%= rc_in_place_editor_field(key, session[key]) %></strong>
+          </p>
         <% end -%>
 		  </div>
 		  

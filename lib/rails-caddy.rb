@@ -1,6 +1,7 @@
 require 'timecop'
 require 'rails-caddy/errors'
 require 'rails-caddy/controllers/action_controller_extensions'
+require 'rails-caddy/controllers/session_editing_controller'
 require 'rails-caddy/controllers/timecop_controller'
 require 'rails-caddy/helpers/rails_caddy_helper'
 
@@ -21,8 +22,6 @@ class RailsCaddy
 	    end
     end
     
-	  require 'rails-caddy/routes'
-	  
     # Lastly, let's add our views to the load path...
     ActionController::Base.append_view_path(File.expand_path(File.join(File.dirname(__FILE__), "rails-caddy", "views")))
   end
@@ -31,7 +30,8 @@ class RailsCaddy
     # Timecop routes
     map.timecop_update '/rails_caddy/timecop_update', :controller => 'rails_caddy', :action => 'timecop_update'
     map.timecop_reset '/rails_caddy/timecop_reset', :controller => 'rails_caddy', :action => 'timecop_reset'
-    
+
+    map.update_session '/rails_caddy/update_session/:key', :controller => 'rails_caddy', :action => 'update_session'
   end
     
 end

@@ -30,8 +30,6 @@ class RailsCaddyTest < Test::Unit::TestCase
       assert ActionController::Base.view_paths.include?(path)
     end
     
-    should "require (and ultimately define) RailsCaddyController"
-
   end
     
 end

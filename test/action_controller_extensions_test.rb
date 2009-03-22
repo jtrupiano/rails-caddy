@@ -4,18 +4,13 @@ require 'test_helper'
 require 'actionpack'
 require 'action_controller'
 
-require 'timecop'
-require "rails-caddy/controllers/timecop_controller"
+class TestController < ActionController::Base; end
 
-class TestTimecopController < ActionController::Base
-  include TimecopController
-end
-
-class TimecopControllerTest < Test::Unit::TestCase
+class ActionControllerExtensionsTest < Test::Unit::TestCase
   
   context "TestTimecopController has been extended by TimecopController" do
     setup do
-      @controller = TestTimecopController.new
+      @controller = TestController.new
     end
 
     context "session has been set" do
