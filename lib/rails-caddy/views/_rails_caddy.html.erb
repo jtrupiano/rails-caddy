@@ -57,6 +57,11 @@
   var RailsCaddy = {
 
     isExtended: 0,
+    sessionVariableTemplate: new Template("<p>#{key}<br /> <strong><%= escape_javascript(rc_in_place_editor_field("\#{key}", "\#{value}")) %></strong></p>"),
+    
+    init: function() {
+    	Event.observe('railsCaddyTab', 'click', RailsCaddy.slideSideBar, true);
+    },
 
     slideSideBar: function() {
 
@@ -79,12 +84,18 @@
 
     },
 
-    init: function() {
-    	Event.observe('railsCaddyTab', 'click', RailsCaddy.slideSideBar, true);
-    },
-
     scroll: function() {
       $('railsCaddy').style.top = (window.scrollY + 100) + "px";
+    },
+    
+    sessionVariableEditor: function(key, value) {
+      if (!value) { value = "blank"; }
+      return RailsCaddy.sessionVariableTemplate.evaluate({key : key, value : value});
+    },
+    
+    addSessionVariable: function() {
+      var val = prompt("Enter the name of the new session variable:");
+      $('sessionObjects').insert(RailsCaddy.sessionVariableEditor(val, "blank"));
     }
   };
 
@@ -104,12 +115,14 @@
 		<div id="railsCaddyContentsInner">
 		  <div id="railsCaddySession">
 		    <h2>Session</h2>
-		    <% session.data.keys.each do |key| -%>
-          <p>
-            <%= h(key) %><br />
-            <strong><%= rc_in_place_editor_field(key, session[key]) %></strong>
-          </p>
-        <% end -%>
+		    <div id="sessionObjects">
+		      <script type="text/javascript">
+  		    <% session.data.keys.each do |key| -%>
+  		      document.write(RailsCaddy.sessionVariableEditor("<%= escape_javascript(key.to_s) %>", "<%= escape_javascript(session[key]) %>"));
+          <% end -%>
+          </script>
+        </div>
+        <p><a href="javascript:void(0)" onclick="RailsCaddy.addSessionVariable();">+ New Session Variable</a></p>
 		  </div>
 		  
 		  <div id="railsCaddyTimecop">
