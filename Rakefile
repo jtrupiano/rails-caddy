@@ -75,3 +75,38 @@ begin
 rescue LoadError
   puts "Rake SshDirPublisher is unavailable or your rubyforge environment is not configured."
 end
+
+
+require 'test/rails_modifier.rb'
+def rails_versions
+  %w(2.3.2)
+end
+namespace :test do
+  desc "Test all supported versions of rails. This takes a while."
+  task :rails_compatibility do
+    # `rm -rf test/rails`
+    # puts "Checking out rails. Please wait."
+    # `git clone git://github.com/rails/rails.git test/rails` rescue nil
+    begin
+      Dir.chdir "test/rails" do
+        rails_versions.each do |version|
+          `rm -rf #{version}`
+          puts "Creating fresh version of rails app v#{version}"
+          `rails _#{version}_ #{version}`
+          puts "Done."
+          Dir.chdir version do
+            puts "Establishing necessary code revisions"
+            RailsModifier.modify!(version)
+            puts "Testing Rails #{version}"
+            `rake test`
+          end
+        end
+        # puts "Testing Rails #{version}"
+        # Rake::Task['test'].reenable
+        # Rake::Task['test'].execute
+      end
+    ensure
+#      `rm -rf test/rails`
+    end
+  end
+end
