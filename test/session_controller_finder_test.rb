@@ -30,16 +30,16 @@ class SessionControllerFinderTest < Test::Unit::TestCase
         end
       end
     
-      context "session has not been initialized, but the key is nil" do
-        setup do
-          ::ApplicationController.session_options[:key] = nil
-        end
+      # context "session has not been initialized, but the key is nil" do
+      #   setup do
+      #     ::ApplicationController.session_options[:key] = nil
+      #   end
+      # 
+      #   should "raise SessionUninitializedError when calling #find" do
+      #     assert_raise(RailsCaddy::SessionUninitializedError) { SessionControllerFinder.find }
+      #   end
+      # end
 
-        should "raise SessionUninitializedError when calling #find" do
-          assert_raise(RailsCaddy::SessionUninitializedError) { SessionControllerFinder.find }
-        end
-      end
-      
       context "session has been initialized, and a key set" do
         setup do
           ::ApplicationController.session_options[:key] = "blah"

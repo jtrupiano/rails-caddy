@@ -51,13 +51,17 @@
   #railsCaddySession p strong {
     font-size: 110%;
   }
+  
+  #railsCaddySession a.x {
+    color: red;
+  }
 </style>
 
 <script type="text/javascript">
   var RailsCaddy = {
 
     isExtended: 0,
-    sessionVariableTemplate: new Template("<p>#{key}<br /> <strong><%= escape_javascript(rc_in_place_editor_field("\#{key}", "\#{value}")) %></strong></p>"),
+    sessionVariableTemplate: new Template("<p>#{key}<br /> <strong><%= escape_javascript(rc_in_place_editor_field("\#{key}", "\#{value}")) %></strong><a href='javascript:void(0)' onclick='RailsCaddy.removeSessionVariable(\"#{key}\");' class='x'>x</a></p>"),
     
     init: function() {
     	Event.observe('railsCaddyTab', 'click', RailsCaddy.slideSideBar, true);
@@ -69,16 +73,12 @@
 
     	if (RailsCaddy.isExtended == 0) {
     		$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/(\.[^.]+)$/, '-active$1');
-
     		new Effect.Fade('railsCaddyContents', { duration:1.0, from:0.0, to:1.0 });
-
     		RailsCaddy.isExtended++;
     	}
     	else {
     		$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/-active(\.[^.]+)$/, '$1');
-
     		new Effect.Fade('railsCaddyContents', { duration:1.0, from:1.0, to:0.0 });
-
     		RailsCaddy.isExtended=0;
     	}
 
@@ -96,6 +96,11 @@
     addSessionVariable: function() {
       var val = prompt("Enter the name of the new session variable:");
       $('sessionObjects').insert(RailsCaddy.sessionVariableEditor(val, "blank"));
+    },
+    
+    removeSessionVariable: function(key) {
+      alert('removing key: ' + key);
+      new Ajax.Request('<%= translated_remove_session_path %>' + key, {method: 'post', });
     }
   };
 
@@ -117,7 +122,7 @@
 		    <h2>Session</h2>
 		    <div id="sessionObjects">
 		      <script type="text/javascript">
-  		    <% session.data.keys.each do |key| -%>
+  		    <% (session.data.keys - %w(flash)).each do |key| -%>
   		      document.write(RailsCaddy.sessionVariableEditor("<%= escape_javascript(key.to_s) %>", "<%= escape_javascript(session[key]) %>"));
           <% end -%>
           </script>

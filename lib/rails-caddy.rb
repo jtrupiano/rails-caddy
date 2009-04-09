@@ -31,7 +31,8 @@ class RailsCaddy
     map.timecop_update '/rails_caddy/timecop_update', :controller => 'rails_caddy', :action => 'timecop_update'
     map.timecop_reset '/rails_caddy/timecop_reset', :controller => 'rails_caddy', :action => 'timecop_reset'
 
-    map.update_session '/rails_caddy/update_session/:key', :controller => 'rails_caddy', :action => 'update_session'
+    map.update_session '/rails_caddy/update_session/:id', :controller => 'rails_caddy', :action => 'update_session'
+    map.remove_session '/rails_caddy/remove_session/:id', :controller => 'rails_caddy', :action => 'remove_session'
   end
     
 end

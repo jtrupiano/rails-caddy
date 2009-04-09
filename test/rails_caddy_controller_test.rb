@@ -37,6 +37,18 @@ class RailsCaddyControllerTest < ActionController::TestCase
   
   context "RailsCaddy has been initialized" do
     
+    should "include TimecopController" do
+      assert RailsCaddyController.included_modules.include?(TimecopController)
+    end
+
+    should "include SessionEditingController" do
+      assert RailsCaddyController.included_modules.include?(SessionEditingController)
+    end
+    
+    should "have defined update_session as an instance method" do
+      assert RailsCaddyController.instance_methods.include?("update_session")
+    end
+    
     should "recognize route timecop_update_path" do
       assert_recognizes({:controller => 'rails_caddy', :action => 'timecop_update'}, '/rails_caddy/timecop_update')
     end
@@ -46,7 +58,11 @@ class RailsCaddyControllerTest < ActionController::TestCase
     end
     
     should "recognize route update_session_path" do
-      assert_recognizes({:controller => 'rails_caddy', :action => 'update_session', :key => 'foo'}, '/rails_caddy/update_session/foo')
+      assert_recognizes({:controller => 'rails_caddy', :action => 'update_session', :id => 'foo'}, '/rails_caddy/update_session/foo')
+    end
+    
+    should "recognize route remove_session_path" do
+      assert_recognizes({:controller => 'rails_caddy', :action => 'remove_session', :id => 'foo'}, '/rails_caddy/remove_session/foo')
     end
     
     should "respond to #timecop_update" do
@@ -63,7 +79,7 @@ class RailsCaddyControllerTest < ActionController::TestCase
     
     should "respond to #update_session" do
       assert_not_equal session[:foo], "bar"
-      post :update_session, {:key => "foo", :value => "bar"}
+      post :update_session, {:id => "foo", :value => "bar"}
       assert_response :success
       assert_equal "bar", session[:foo]
     end

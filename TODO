@@ -1,0 +1,2 @@
+* When removing a session variable, remove it from the DOM too
+* When adding a new session variable, auto-open the in place edit
