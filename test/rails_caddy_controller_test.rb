@@ -50,7 +50,7 @@ class RailsCaddyControllerTest < ActionController::TestCase
       assert RailsCaddyController.instance_methods.include?("update_session")
     end
     
-    include CommonRailsCaddyTests
+    #include CommonRailsCaddyTests
     
   end
   

@@ -2,19 +2,22 @@
 == Rails 2.3.x ==
 
 edit application_controller.rb
-  helper RailsCaddyHelper if %w(development staging).include? RAILS_ENV
-  layout nil
+  helper RailsCaddyHelper if $rails_caddy_initialized
   
 edit config/environments/development.rb -- DO NOT MAKE THIS AVAILABLE TO PRODUCTION!!!
   config.gem "rails-caddy"
   
-  # after initializer block --- note, this should really only go in 
-  require 'rails-caddy'
-  require_dependency 'application'
-  RailsCaddy.init!
+  config.after_initialize do
+    require 'rails-caddy'
+    require_dependency 'application'
+    RailsCaddy.init!
+  end
   
 add just before you close your body tag in your layout (it's actually unimportant where you place it, as long as it's in the body):
-  <%= rails_caddy %>
+  <%= rails_caddy if $rails_caddy_initialized %>
+  
+add to the top of config/routes.rb
+  RailsCaddy.define_routes!(map) if $rails_caddy_activated
 
 == Rails 2.2.x, 2.1.x ==
 

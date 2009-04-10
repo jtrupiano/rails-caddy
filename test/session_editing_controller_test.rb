@@ -7,6 +7,7 @@ require 'action_controller'
 # Create RailsCaddyController, and test against it.
 class ApplicationController < ActionController::Base; end
 RailsCaddy.init!
+require 'routes' # load in the RailsCaddy routes
 
 class SessionEditingControllerTest < ActionController::TestCase
   tests RailsCaddyController

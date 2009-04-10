@@ -10,18 +10,14 @@ class RailsModifier
       prepend(frog_actions, "def index", 'app/controllers/frogs_controller.rb')
       write('app/views/frogs/index.html.erb', frogs_index_html_erb)
       prepend(application_rb, "end", application_controller(version))
-      append("  config.gem 'rails-caddy'", "Rails::Initializer.run do |config|", "config/environment.rb")
-      write("config/environment.rb", File.readlines("config/environment.rb").join + "\n" + environment_rb(version))
+      append(test_config_rb(version), nil, "config/environments/test.rb")
+      append(routes_rb, "ActionController::Routing::Routes.draw do |map|", "config/routes.rb")
       
       # Copy over tests
       FileUtils::cp(file_path("common_rails_caddy_tests.rb"), File.join("test", "common_rails_caddy_tests.rb"))
       FileUtils::cp(file_path("rcct.rb"), File.join("test", "functional", "rails_caddy_controller_test.rb"))
       FileUtils::cp(file_path("fct.rb"),  File.join("test", "functional", "frogs_controller_test.rb"))
       
-      unless version =~ /^2\.3\./
-        append("require 'rails-caddy/tasks'", nil,  'Rakefile')
-        `rake caddy:routes:install`
-      end
     end
 
     private
@@ -92,13 +88,21 @@ class RailsModifier
   layout nil
         RUBY
       end
-    
-      def environment_rb(version)
+      
+      def test_config_rb(version)
         <<-RUBY
-require 'rails-caddy'
-require_dependency '#{application_rb_require(version)}'
-RailsCaddy.init!
+config.gem 'rails-caddy'
+
+config.after_initialize do
+  require 'rails-caddy'
+  require_dependency '#{application_rb_require(version)}'
+  RailsCaddy.init!  
+end
         RUBY
+      end
+      
+      def routes_rb
+        "RailsCaddy.define_routes!(map) if $rails_caddy_activated"
       end
   end
 end
