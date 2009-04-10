@@ -1,0 +1,4 @@
+gems:
+- name: Shoulda
+  version: '>~ 1.2.0'
+  
