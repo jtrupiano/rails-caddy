@@ -21,7 +21,7 @@ edit frogs/index.html.erb
     <%= javascript_include_tag :all %>
   </head>
   <body>
-    <% if ["staging", "development"].include?(RAILS_ENV) -%>
+    <% if %w(development staging).include?(RAILS_ENV) -%>
       <%= rails_caddy %>
     <% end -%>
   </body>

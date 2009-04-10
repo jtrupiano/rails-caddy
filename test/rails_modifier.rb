@@ -1,3 +1,4 @@
+require 'fileutils'
 
 class RailsModifier
   
@@ -9,8 +10,18 @@ class RailsModifier
       prepend(frog_actions, "def index", 'app/controllers/frogs_controller.rb')
       write('app/views/frogs/index.html.erb', frogs_index_html_erb)
       prepend(application_rb, "end", application_controller(version))
-      append("config.gem 'rails-caddy'", "Rails::Initializer.run do |config|", "config/environment.rb")
+      append("  config.gem 'rails-caddy'", "Rails::Initializer.run do |config|", "config/environment.rb")
       write("config/environment.rb", File.readlines("config/environment.rb").join + "\n" + environment_rb(version))
+      
+      # Copy over tests
+      FileUtils::cp(file_path("common_rails_caddy_tests.rb"), File.join("test", "common_rails_caddy_tests.rb"))
+      FileUtils::cp(file_path("rcct.rb"), File.join("test", "functional", "rails_caddy_controller_test.rb"))
+      FileUtils::cp(file_path("fct.rb"),  File.join("test", "functional", "frogs_controller_test.rb"))
+      
+      unless version =~ /^2\.3\./
+        append("require 'rails-caddy/tasks'", nil,  'Rakefile')
+        `rake caddy:routes:install`
+      end
     end
 
     private
@@ -21,13 +32,22 @@ class RailsModifier
       
       def append(content, after_string, filename)
         file_contents = File.readlines(filename).join
-        write(filename, file_contents.gsub(after_string, after_string + "\n" + content))
+        new_contents = if after_string.nil?
+          file_contents + "\n" + content
+        else
+          file_contents.gsub(after_string, after_string + "\n" + content)
+        end
+        write(filename, new_contents)
       end
     
       def write(filename, content)
         File.open(filename, 'w') do |f|
           f.write(content)
         end
+      end
+      
+      def file_path(filename)
+        File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "..", "files", filename))
       end
     
       def frog_actions
@@ -50,7 +70,7 @@ class RailsModifier
   <%= javascript_include_tag :all %>
 </head>
 <body>
-  <% if ["staging", "development"].include?(RAILS_ENV) -%>
+  <% if %w(development staging test).include?(RAILS_ENV) -%>
     <%= rails_caddy %>
   <% end -%>
 </body>
@@ -68,7 +88,7 @@ class RailsModifier
   
       def application_rb
         <<-RUBY
-  helper RailsCaddyHelper if %w(development staging).include? RAILS_ENV
+  helper RailsCaddyHelper if %w(development staging test).include? RAILS_ENV
   layout nil
         RUBY
       end

@@ -79,14 +79,13 @@ end
 
 require 'test/rails_modifier.rb'
 def rails_versions
-  %w(2.3.2)
+  %w(2.3.2 2.2.2 2.1.2)
 end
 namespace :test do
   desc "Test all supported versions of rails. This takes a while."
   task :rails_compatibility do
-    # `rm -rf test/rails`
-    # puts "Checking out rails. Please wait."
-    # `git clone git://github.com/rails/rails.git test/rails` rescue nil
+    puts `mkdir -p test/rails`
+    puts `rm -rf test/rails/*`
     begin
       Dir.chdir "test/rails" do
         rails_versions.each do |version|
@@ -98,15 +97,13 @@ namespace :test do
             puts "Establishing necessary code revisions"
             RailsModifier.modify!(version)
             puts "Testing Rails #{version}"
-            `rake test`
+            puts `ruby test/functional/frogs_controller_test.rb`
+            puts `ruby test/functional/rails_caddy_controller_test.rb`
           end
         end
-        # puts "Testing Rails #{version}"
-        # Rake::Task['test'].reenable
-        # Rake::Task['test'].execute
       end
     ensure
-#      `rm -rf test/rails`
+     #`rm -rf test/rails`
     end
   end
 end
