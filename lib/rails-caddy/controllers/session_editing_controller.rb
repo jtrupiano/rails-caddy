@@ -10,7 +10,7 @@ module SessionEditingController
   end
   
   def remove_session
-    if params[:id].nil? || session[params[:id]].nil?
+    if params[:id].nil?
       render :status => 422, :text => "Invalid request.  Session variable is either missing or invalid."
       return false
     end      

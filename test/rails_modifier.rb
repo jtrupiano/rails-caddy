@@ -102,7 +102,10 @@ end
       end
       
       def routes_rb
-        "RailsCaddy.define_routes!(map) if $rails_caddy_activated"
+        <<-RUBY
+  RailsCaddy.define_routes!(map) if $rails_caddy_activated
+  #map.resources :frogs, :only => [:index], :member => [:abc, :def, :ghi]
+        RUBY
       end
   end
 end

@@ -114,7 +114,7 @@
 
 <div id="railsCaddy">
 	
-	<a href="#" id="railsCaddyTab"><img src="../images/slide-button.gif" alt="caddy" title="caddy" /></a>
+	<a href="#" id="railsCaddyTab">caddy</a>
 	
 	<div id="railsCaddyContents" style="display: none;">
 		<div id="railsCaddyContentsInner">
@@ -123,6 +123,7 @@
 		    <div id="sessionObjects">
 		      <script type="text/javascript">
   		    <% (session.data.keys - %w(flash)).each do |key| -%>
+  		      <% next if session[key].nil? -%>
   		      document.write(RailsCaddy.sessionVariableEditor("<%= escape_javascript(key.to_s) %>", "<%= escape_javascript(session[key]) %>"));
           <% end -%>
           </script>

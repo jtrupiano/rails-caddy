@@ -17,7 +17,7 @@ rescue LoadError
 end
 
 require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
+Rake::TestTask.new(:test => ['test:clean']) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/*_test.rb'
   test.verbose = false
@@ -82,10 +82,11 @@ def rails_versions
   %w(2.3.2 2.2.2 2.1.2)
 end
 namespace :test do
+  desc "Run all test suites."
+  task :all => ['test:clean', 'test', 'test:rails_compatibility']
+  
   desc "Test all supported versions of rails. This takes a while."
-  task :rails_compatibility do
-    puts `mkdir -p test/rails`
-    puts `rm -rf test/rails/*`
+  task :rails_compatibility => ['test:clean'] do
     begin
       Dir.chdir "test/rails" do
         rails_versions.each do |version|
@@ -105,5 +106,10 @@ namespace :test do
     ensure
      #`rm -rf test/rails`
     end
+  end
+  
+  task :clean do
+    `mkdir -p test/rails`
+    `rm -rf test/rails/*`    
   end
 end
