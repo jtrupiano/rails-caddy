@@ -9,11 +9,11 @@ module RailsCaddyHelper
     url << "/" unless url.match(/\/$/)
   end
   
-  def rc_in_place_editor(field_id, url)
-    function =  "new Ajax.InPlaceEditor("
+  def rc_in_place_editor(key, field_id, url)
+    function =  "RailsCaddy.editors['" + key + "'] = new Ajax.InPlaceEditor("
     function << "'#{field_id}', "
     function << "'#{url}'"
-    function << ')'
+    function << ');'
 
     javascript_tag(function)
   end
@@ -27,7 +27,7 @@ module RailsCaddyHelper
     url << "/" unless url.match(/\/$/)
     url << key
     
-    tag.content_tag(tag_options.delete(:tag), value, tag_options) + rc_in_place_editor(tag_options[:id], url)
+    tag.content_tag(tag_options.delete(:tag), value, tag_options) + rc_in_place_editor(key, tag_options[:id], url)
   end
   
 end

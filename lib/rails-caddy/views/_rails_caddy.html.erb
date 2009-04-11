@@ -59,9 +59,11 @@
 
 <script type="text/javascript">
   var RailsCaddy = {
+    
+    editors: {},
 
     isExtended: 0,
-    sessionVariableTemplate: new Template("<p>#{key}<br /> <strong><%= escape_javascript(rc_in_place_editor_field("\#{key}", "\#{value}")) %></strong><a href='javascript:void(0)' onclick='RailsCaddy.removeSessionVariable(\"#{key}\");' class='x'>x</a></p>"),
+    sessionVariableTemplate: new Template("<p>#{key}<br /> <strong><%= escape_javascript(rc_in_place_editor_field("\#{key}", "\#{value}")) %></strong><a href='javascript:void(0)' onclick='RailsCaddy.removeSessionVariable(\"#{key}\", this);' class='x'>x</a></p>"),
     
     init: function() {
     	Event.observe('railsCaddyTab', 'click', RailsCaddy.slideSideBar, true);
@@ -72,12 +74,12 @@
     	new Effect.toggle('railsCaddyContents', 'blind', {scaleX: 'true', scaleY: 'true;', scaleContent: false});
 
     	if (RailsCaddy.isExtended == 0) {
-    		$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/(\.[^.]+)$/, '-active$1');
+    		//$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/(\.[^.]+)$/, '-active$1');
     		new Effect.Fade('railsCaddyContents', { duration:1.0, from:0.0, to:1.0 });
     		RailsCaddy.isExtended++;
     	}
     	else {
-    		$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/-active(\.[^.]+)$/, '$1');
+    		//$('railsCaddyTab').childNodes[0].src = $('railsCaddyTab').childNodes[0].src.replace(/-active(\.[^.]+)$/, '$1');
     		new Effect.Fade('railsCaddyContents', { duration:1.0, from:1.0, to:0.0 });
     		RailsCaddy.isExtended=0;
     	}
@@ -95,12 +97,20 @@
     
     addSessionVariable: function() {
       var val = prompt("Enter the name of the new session variable:");
-      $('sessionObjects').insert(RailsCaddy.sessionVariableEditor(val, "blank"));
+      if (val) {
+        $('sessionObjects').insert(RailsCaddy.sessionVariableEditor(val, "blank"));
+        setTimeout("RailsCaddy.editors['" + val + "'].enterEditMode();", 100);
+      }
     },
     
-    removeSessionVariable: function(key) {
-      alert('removing key: ' + key);
-      new Ajax.Request('<%= translated_remove_session_path %>' + key, {method: 'post', });
+    removeSessionVariable: function(key, anchor) {
+      //alert('removing key: ' + key);
+      new Ajax.Request('<%= translated_remove_session_path %>' + key, {method: 'post', 
+        onSuccess: function(response) {
+          RailsCaddy.editors[key] = null;
+          $(anchor.parentNode).remove();
+        }
+      });
     }
   };
 
@@ -122,7 +132,7 @@
 		    <h2>Session</h2>
 		    <div id="sessionObjects">
 		      <script type="text/javascript">
-  		    <% (session.data.keys - %w(flash)).each do |key| -%>
+  		    <% (session.data.keys - ["flash", :timecop_adjusted_time]).each do |key| -%>
   		      <% next if session[key].nil? -%>
   		      document.write(RailsCaddy.sessionVariableEditor("<%= escape_javascript(key.to_s) %>", "<%= escape_javascript(session[key]) %>"));
           <% end -%>
