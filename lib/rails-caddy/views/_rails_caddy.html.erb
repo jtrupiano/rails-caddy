@@ -157,6 +157,14 @@
 		  
 		  <div id="railsCaddyEmail">
 		    <h2>Sanitize Email</h2>
+		    <p>The current email address is <%= ActionMailer::Base.sanitized_recipients %>.</p>
+		    <% form_remote_tag :url => set_sanitize_email_address_path do -%>
+		      <%= text_field_tag "value", "", :size => 15 %>
+		      <p>
+		        <%= submit_tag "Change Email" %>
+		        <%= link_to_remote "Unset", :url => unset_sanitize_email_address_path %>
+		      </p>
+		    <% end -%>
 		  </div>
 		  
 		  <div id="railsCaddyStats">
