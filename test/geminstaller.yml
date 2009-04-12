@@ -1,3 +1,5 @@
 gems:
 - name: Shoulda
   version: '~> 1.2.0'
+- name: rr
+  version: '~> 0.8.1'

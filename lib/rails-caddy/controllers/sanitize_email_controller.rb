@@ -11,11 +11,13 @@ module SanitizeEmailController
   module Actions
   
     def set_sanitize_email_address
-    
+      session[:sanitize_email_address] = params[:value]
+      render :status => 200, :text => params[:value]
     end
   
     def unset_sanitize_email_address
-    
+      session[:sanitize_email_address] = nil
+      render :status => 200, :text => "nil"
     end
   end
   
