@@ -79,7 +79,11 @@ end
 
 require 'test/rails_modifier.rb'
 def rails_versions
-  %w(2.3.2 2.2.2 2.1.2)
+  if ENV['RAILS_VERSION']
+    [ENV['RAILS_VERSION']]
+  else
+    %w(2.3.2 2.2.2 2.1.2)
+  end
 end
 namespace :test do
   desc "Run all test suites."
@@ -98,8 +102,9 @@ namespace :test do
             puts "Establishing necessary code revisions"
             RailsModifier.modify!(version)
             puts "Testing Rails #{version}"
-            puts `ruby test/functional/frogs_controller_test.rb`
-            puts `ruby test/functional/rails_caddy_controller_test.rb`
+            %w(frogs_controller rails_caddy_controller action_controller_extensions).each do |file_prefix|
+              puts `ruby test/functional/#{file_prefix}_test.rb`
+            end
           end
         end
       end

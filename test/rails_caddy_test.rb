@@ -17,8 +17,12 @@ class RailsCaddyTest < Test::Unit::TestCase
       RailsCaddy.init!
     end
   
-    should "add ActionControllerExtensions to ActionController::Base" do
-      assert ActionController::Base.included_modules.include?(ActionControllerExtensions)
+    should "add TimecopController::ActionControllerExtensions to ActionController::Base" do
+      assert ActionController::Base.included_modules.include?(TimecopController::ActionControllerExtensions)
+    end
+    
+    should "add SanitizeEmailController::ActionControllerExtensions to ActionController::Base" do
+      assert ActionController::Base.included_modules.include?(SanitizeEmailController::ActionControllerExtensions)
     end
     
     should "load RailsCaddyController" do

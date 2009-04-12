@@ -1,6 +1,7 @@
 require 'timecop'
+require 'actionmailer' # would like to remove this
+require 'sanitize_email'
 require 'rails-caddy/errors'
-require 'rails-caddy/controllers/action_controller_extensions'
 require 'rails-caddy/controllers/session_editing_controller'
 require 'rails-caddy/controllers/timecop_controller'
 require 'rails-caddy/controllers/sanitize_email_controller'
@@ -12,8 +13,9 @@ class RailsCaddy
   
   def self.init!
     # extend ActionController::Base
-    ActionController::Base.send(:include, ActionControllerExtensions)
-    	  
+    ActionController::Base.send(:include, TimecopController::ActionControllerExtensions)
+    ActionController::Base.send(:include, SanitizeEmailController::ActionControllerExtensions)
+    
 	  # Pull in the RailsCaddyController
 	  require 'rails-caddy/controllers/rails_caddy_controller'
 	      

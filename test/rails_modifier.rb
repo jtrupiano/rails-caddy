@@ -10,16 +10,17 @@ class RailsModifier
       prepend(frog_actions, "def index", 'app/controllers/frogs_controller.rb')
       write('app/views/frogs/index.html.erb', frogs_index_html_erb)
       prepend(application_rb, "end", application_controller(version))
+      replace("config.time_zone = 'UTC'", "", "config/environment.rb")
       append(test_config_rb(version), nil, "config/environments/test.rb")
       append(routes_rb, "ActionController::Routing::Routes.draw do |map|", "config/routes.rb")
       
       # Copy over tests
-      %w(session_editing timecop sanitize_email).each do |file_prefix|
-        FileUtils::cp(file_path("#{file_prefix}_controller_test_methods.rb"), File.join("test", "#{file_prefix}_controller_test_methods.rb"))
+      %w(session_editing_controller timecop_controller timecop_action_controller_extensions sanitize_email_controller sanitize_email_action_controller_extensions).each do |file_prefix|
+        FileUtils::cp(file_path("#{file_prefix}_test_methods.rb"), File.join("test", "#{file_prefix}_test_methods.rb"))
       end
       FileUtils::cp(file_path("rcct.rb"), File.join("test", "functional", "rails_caddy_controller_test.rb"))
       FileUtils::cp(file_path("fct.rb"),  File.join("test", "functional", "frogs_controller_test.rb"))
-      
+      FileUtils::cp(file_path("acet.rb"),  File.join("test", "functional", "action_controller_extensions_test.rb"))
     end
 
     private
@@ -36,6 +37,11 @@ class RailsModifier
           file_contents.gsub(after_string, after_string + "\n" + content)
         end
         write(filename, new_contents)
+      end
+      
+      def replace(original_content, new_content, filename)
+        file_contents = File.readlines(filename).join
+        write(filename, file_contents.gsub(original_content, new_content))
       end
     
       def write(filename, content)
