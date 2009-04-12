@@ -1,2 +1,1 @@
-* When removing a session variable, remove it from the DOM too
-* When adding a new session variable, auto-open the in place edit
+* Need to figure out a way to marry the views and their POSTs....webrat + selenium was a no-go as of April 11, 2009.  I'll consider rewriting webrat to serve my purposes, but that's a pretty deep rabbit hole from my initial investigation.

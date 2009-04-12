@@ -1,6 +1,4 @@
 
-== Rails 2.3.x ==
-
 edit application_controller.rb
   helper RailsCaddyHelper if $rails_caddy_initialized
   
@@ -11,16 +9,12 @@ edit config/environments/development.rb -- DO NOT MAKE THIS AVAILABLE TO PRODUCT
     require 'rails-caddy'
     require_dependency 'application'
     RailsCaddy.init!
+
+    ActionMailer::Base.sanitized_recipients = "nobody@smartlogicsolutions.com"
   end
-  
+
 add just before you close your body tag in your layout (it's actually unimportant where you place it, as long as it's in the body):
   <%= rails_caddy if $rails_caddy_initialized %>
   
 add to the top of config/routes.rb
   RailsCaddy.define_routes!(map) if $rails_caddy_activated
-
-== Rails 2.2.x, 2.1.x ==
-
-add require 'rails-caddy/tasks' to bottom of Rakefile
-rake caddy:routes:install
-Then follow the instructions for 2.3.x

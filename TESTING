@@ -1,5 +1,4 @@
-Much of the RailsCaddy code itself has been tested, but the coverage for very specific versions of rails is not automated.
 
 == Open Questions ==
-* How do I automate this testing?  Will Cucumber help me to set this up?
 * I need to write tests to ensure that our helpers, et al are not actually loaded in production mode....we want to avoid having if RAILS_ENV all over the place where we include this stuff....
+* Need to figure out a way to marry the views and their POSTs....webrat + selenium was a no-go as of April 11, 2009.  I'll consider rewriting webrat to serve my purposes, but that's a pretty deep rabbit hole from my initial investigation.
