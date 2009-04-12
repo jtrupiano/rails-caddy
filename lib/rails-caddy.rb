@@ -3,6 +3,7 @@ require 'rails-caddy/errors'
 require 'rails-caddy/controllers/action_controller_extensions'
 require 'rails-caddy/controllers/session_editing_controller'
 require 'rails-caddy/controllers/timecop_controller'
+require 'rails-caddy/controllers/sanitize_email_controller'
 require 'rails-caddy/helpers/rails_caddy_helper'
 
 $rails_caddy_activated = false

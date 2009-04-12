@@ -10,7 +10,7 @@ begin
     gem.homepage = "http://github.com/jtrupiano/rails-caddy"
     gem.authors = ["John Trupiano"]
     gem.add_dependency "timecop", "~> 0.2.0"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency "sanitize-email", "~> 0.1.0"
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
