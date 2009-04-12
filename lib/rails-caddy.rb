@@ -25,12 +25,17 @@ class RailsCaddy
   end
   
   def self.define_routes!(map)
+    # Session editing routes
+    map.update_session '/rails_caddy/update_session/:id', :controller => 'rails_caddy', :action => 'update_session'
+    map.remove_session '/rails_caddy/remove_session/:id', :controller => 'rails_caddy', :action => 'remove_session'
+
     # Timecop routes
     map.timecop_update '/rails_caddy/timecop_update', :controller => 'rails_caddy', :action => 'timecop_update'
     map.timecop_reset '/rails_caddy/timecop_reset', :controller => 'rails_caddy', :action => 'timecop_reset'
 
-    map.update_session '/rails_caddy/update_session/:id', :controller => 'rails_caddy', :action => 'update_session'
-    map.remove_session '/rails_caddy/remove_session/:id', :controller => 'rails_caddy', :action => 'remove_session'
+    # Sanitize Email routes
+    map.set_sanitize_email_address '/rails_caddy/set_sanitize_email_address', :controller => 'rails_caddy', :action => 'set_sanitize_email_address'
+    map.unset_sanitize_email_address '/rails_caddy/unset_sanitize_email_address', :controller => 'rails_caddy', :action => 'unset_sanitize_email_address'
   end
     
 end
