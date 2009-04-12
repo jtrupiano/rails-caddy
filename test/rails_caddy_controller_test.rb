@@ -1,6 +1,8 @@
 require 'test_helper'
 require 'timecop'
-require 'files/common_rails_caddy_tests'
+require 'files/session_editing_controller_test_methods'
+require 'files/timecop_controller_test_methods'
+require 'files/sanitize_email_controller_test_methods'
 
 # We need ActionPack loaded to test this out
 require 'actionpack'
@@ -32,7 +34,9 @@ class RailsCaddyControllerTest < ActionController::TestCase
       assert RailsCaddyController.included_modules.include?(SanitizeEmailController)
     end
     
-    include CommonRailsCaddyTests
+    include SessionEditingControllerTestMethods
+    include TimecopControllerTestMethods
+    include SanitizeEmailControllerTestMethods
     
   end
   

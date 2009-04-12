@@ -14,7 +14,9 @@ class RailsModifier
       append(routes_rb, "ActionController::Routing::Routes.draw do |map|", "config/routes.rb")
       
       # Copy over tests
-      FileUtils::cp(file_path("common_rails_caddy_tests.rb"), File.join("test", "common_rails_caddy_tests.rb"))
+      %w(session_editing timecop sanitize_email).each do |file_prefix|
+        FileUtils::cp(file_path("#{file_prefix}_controller_test_methods.rb"), File.join("test", "#{file_prefix}_controller_test_methods.rb"))
+      end
       FileUtils::cp(file_path("rcct.rb"), File.join("test", "functional", "rails_caddy_controller_test.rb"))
       FileUtils::cp(file_path("fct.rb"),  File.join("test", "functional", "frogs_controller_test.rb"))
       
