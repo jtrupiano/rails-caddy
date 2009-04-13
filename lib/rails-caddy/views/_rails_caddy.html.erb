@@ -6,6 +6,7 @@
   	height: auto;
   	top: 100px;
   	left: 0px;
+  	z-index: 100;
   }
 
   #railsCaddyTab {
@@ -134,7 +135,7 @@
 		      <script type="text/javascript">
   		    <% (session.data.keys - ["flash", :timecop_adjusted_time]).each do |key| -%>
   		      <% next if session[key].nil? -%>
-  		      document.write(RailsCaddy.sessionVariableEditor("<%= escape_javascript(key.to_s) %>", "<%= escape_javascript(session[key]) %>"));
+  		      document.write(RailsCaddy.sessionVariableEditor("<%= escape_javascript(key.to_s) %>", "<%= escape_javascript(session[key].to_s) %>"));
           <% end -%>
           </script>
         </div>

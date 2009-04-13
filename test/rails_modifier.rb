@@ -74,9 +74,7 @@ class RailsModifier
   <%= javascript_include_tag :all %>
 </head>
 <body>
-  <% if %w(development staging test).include?(RAILS_ENV) -%>
-    <%= rails_caddy %>
-  <% end -%>
+  <%= rails_caddy if Object.const_defined?(:RailsCaddy) %>
 </body>
 </html>
         ERB
@@ -92,7 +90,7 @@ class RailsModifier
   
       def application_rb
         <<-RUBY
-  helper RailsCaddyHelper if %w(development staging test).include? RAILS_ENV
+  helper RailsCaddyHelper if Object.const_defined?(:RailsCaddy)
   layout nil
         RUBY
       end
@@ -111,7 +109,7 @@ end
       
       def routes_rb
         <<-RUBY
-  RailsCaddy.define_routes!(map) if $rails_caddy_activated
+  RailsCaddy.define_routes!(map) if Object.const_defined?(:RailsCaddy)
   #map.resources :frogs, :only => [:index], :member => [:abc, :def, :ghi]
         RUBY
       end

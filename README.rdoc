@@ -4,11 +4,13 @@ A developer's QA "caddy" that aids in QA'ing, debugging, and otherwise navigatin
 
 == Usage
 
+RULE #1: DO NOT DEPLOY THIS TO PRODUCTION.  I WILL HAVE NO EMPATHY WHATSOEVER IF YOU DO NOT HEED MY WARNING.  THIS IS A VERY DANGEROUS GEM THAT WILL DEFINITELY SCREW YOU OVER IF YOU DEPLOY IT TO PRODUCTION.
+
 This process is not currently scripted, but following these four steps will get you off and running.
 
 * edit application_controller.rb / application.rb
 
-    helper RailsCaddyHelper if $rails_caddy_initialized
+    helper RailsCaddyHelper if Object.const_defined?(:RailsCaddy)
   
 * edit config/environments/development.rb -- DO NOT MAKE THIS AVAILABLE TO PRODUCTION!!!
 
@@ -24,11 +26,11 @@ This process is not currently scripted, but following these four steps will get 
 
 * add just before you close your body tag in your layout (it's actually unimportant where you place it, as long as it's in the body):
 
-    <%= rails_caddy if $rails_caddy_initialized %>
+    <%= rails_caddy if Object.const_defined?(:RailsCaddy) %>
   
 * add to the top of config/routes.rb
 
-    RailsCaddy.define_routes!(map) if $rails_caddy_activated
+    RailsCaddy.define_routes!(map) if Object.const_defined?(:RailsCaddy)
 
 
 == Copyright
