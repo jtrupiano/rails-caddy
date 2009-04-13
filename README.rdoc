@@ -16,7 +16,7 @@ This process is not currently scripted, but following these four steps will get 
   
     config.after_initialize do
       require 'rails-caddy'
-      require_dependency 'application'
+      require_dependency 'application_controller' # 'application' if pre rails 2.3
       RailsCaddy.init!
 
       ActionMailer::Base.sanitized_recipients = "nobody@smartlogicsolutions.com"
