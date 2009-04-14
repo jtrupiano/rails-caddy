@@ -11,7 +11,8 @@ class RailsModifier
       write('app/views/frogs/index.html.erb', frogs_index_html_erb)
       prepend(application_rb, "end", application_controller(version))
       replace("config.time_zone = 'UTC'", "", "config/environment.rb")
-      append(test_config_rb(version), nil, "config/environments/test.rb")
+      append(config_rb(version), nil, "config/environments/test.rb")
+      append(config_rb(version), nil, "config/environments/development.rb")
       append(routes_rb, "ActionController::Routing::Routes.draw do |map|", "config/routes.rb")
       
       # Copy over tests
@@ -74,6 +75,9 @@ class RailsModifier
   <%= javascript_include_tag :all %>
 </head>
 <body>
+  <h2>Some Debugging Output</h2>
+  <p>Time.now = <%= Time.now.to_s(:db) %></p>
+  <p>ActionMailer::Base.sanitized_recipients = <%= ActionMailer::Base.sanitized_recipients.to_s %></p>
   <%= rails_caddy if Object.const_defined?(:RailsCaddy) %>
 </body>
 </html>
@@ -90,12 +94,16 @@ class RailsModifier
   
       def application_rb
         <<-RUBY
-  helper RailsCaddyHelper if Object.const_defined?(:RailsCaddy)
+  if Object.const_defined?(:RailsCaddy)
+    helper RailsCaddyHelper
+    around_filter :handle_sanitize_email
+    around_filter :handle_timecop_offset, :except => [:timecop_update, :timecop_reset]
+  end
   layout nil
         RUBY
       end
       
-      def test_config_rb(version)
+      def config_rb(version)
         <<-RUBY
 config.gem 'rails-caddy'
 

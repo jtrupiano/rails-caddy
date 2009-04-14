@@ -1,3 +1,3 @@
-raise 'wtf!'
-require 'rails-caddy'
-RailsCaddy.init!
+# raise 'wtf!'
+# require 'rails-caddy'
+# RailsCaddy.init!

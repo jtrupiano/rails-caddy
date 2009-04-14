@@ -7,6 +7,7 @@
   	top: 100px;
   	left: 0px;
   	z-index: 100;
+  	font-family: Helvetica, Arial, Times;
   }
 
   #railsCaddyTab {
@@ -133,7 +134,7 @@
 		    <h2>Session</h2>
 		    <div id="sessionObjects">
 		      <script type="text/javascript">
-  		    <% (session.data.keys - ["flash", :timecop_adjusted_time]).each do |key| -%>
+  		    <% (session.data.keys - ["flash", :timecop_adjusted_time, :sanitize_email_address]).each do |key| -%>
   		      <% next if session[key].nil? -%>
   		      document.write(RailsCaddy.sessionVariableEditor("<%= escape_javascript(key.to_s) %>", "<%= escape_javascript(session[key].to_s) %>"));
           <% end -%>
@@ -144,7 +145,7 @@
 		  
 		  <div id="railsCaddyTimecop">
 		    <h2>Timecop</h2>
-		    <p>The time is <%= Time.now.to_s(:db) %></p>
+		    <p>The time is <strong style="color: red;"><%= Time.now.to_s(:db) %></strong></p>
         <% form_remote_tag :url => timecop_update_path do -%>
           <% %w(year month day hour min sec).each do |field| -%>
             <%= text_field_tag field, Time.now.send(field), :size => (field == "year" ? 3 : 1) %>
@@ -158,7 +159,7 @@
 		  
 		  <div id="railsCaddyEmail">
 		    <h2>Sanitize Email</h2>
-		    <p>The current email address is <%= ActionMailer::Base.sanitized_recipients %>.</p>
+		    <p>All email sent to: <strong style="color: red;"><%= ActionMailer::Base.sanitized_recipients %></strong></p>
 		    <% form_remote_tag :url => set_sanitize_email_address_path do -%>
 		      <%= text_field_tag "value", "", :size => 15 %>
 		      <p>

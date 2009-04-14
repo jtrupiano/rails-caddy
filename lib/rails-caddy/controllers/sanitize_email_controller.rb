@@ -18,11 +18,11 @@ module SanitizeEmailController
   end
   
   module ActionControllerExtensions
-    def self.included(base)
-      base.class_eval do
-        around_filter :handle_sanitize_email
-      end
-    end
+    # def self.included(base)
+    #   base.class_eval do
+    #     around_filter :handle_sanitize_email
+    #   end
+    # end
     
     def handle_sanitize_email
       if session[:sanitize_email_address].nil?

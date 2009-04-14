@@ -6,11 +6,15 @@ A developer's QA "caddy" that aids in QA'ing, debugging, and otherwise navigatin
 
 RULE #1: DO NOT DEPLOY THIS TO PRODUCTION.  I WILL HAVE NO EMPATHY WHATSOEVER IF YOU DO NOT HEED MY WARNING.  THIS IS A VERY DANGEROUS GEM THAT WILL DEFINITELY SCREW YOU OVER IF YOU DEPLOY IT TO PRODUCTION.
 
-This process is not currently scripted, but following these four steps will get you off and running.
+This process is not currently scripted, but following these steps will get you off and running.
 
-* edit application_controller.rb / application.rb
+* edit application.rb
 
-    helper RailsCaddyHelper if Object.const_defined?(:RailsCaddy)
+    if Object.const_defined?(:RailsCaddy)
+      helper RailsCaddyHelper
+      around_filter :handle_sanitize_email
+      around_filter :handle_timecop_offset, :except => [:timecop_update, :timecop_reset]
+    end
   
 * edit config/environments/development.rb -- DO NOT MAKE THIS AVAILABLE TO PRODUCTION!!!
 
@@ -32,6 +36,9 @@ This process is not currently scripted, but following these four steps will get 
 
     RailsCaddy.define_routes!(map) if Object.const_defined?(:RailsCaddy)
 
+=== Caveats
+
+You'll need to make a slight adjustment to the procedure above if you 
 
 == Copyright
 

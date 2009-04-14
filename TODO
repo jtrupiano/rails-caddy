@@ -1,3 +1,4 @@
 * Need to figure out a way to marry the views and their POSTs....webrat + selenium was a no-go as of April 11, 2009.  I'll consider rewriting webrat to serve my purposes, but that's a pretty deep rabbit hole from my initial investigation.
 * Find a better alternative to embedding "if Object.const_defined?(:RailsCaddy)" in several places.
 * Create a generator to add auto-add these snippets to your project
+* Determine why around_filters cannot be dynamically included.  It's killing me.
