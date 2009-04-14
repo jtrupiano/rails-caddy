@@ -1,10 +1,10 @@
 module TimecopController
   
   def self.included(base)
-    base.class_eval do
-      # Make sure we don't reset our own time!
-      skip_filter :handle_timecop_offset
-    end
+    # base.class_eval do
+    #   # Make sure we don't reset our own time!
+    #   skip_filter :handle_timecop_offset
+    # end
     base.send(:include, Actions)
   end
 
@@ -22,11 +22,11 @@ module TimecopController
   end
   
   module ActionControllerExtensions
-    def self.included(base)
-      base.class_eval do
-        around_filter :handle_timecop_offset
-      end
-    end
+    # def self.included(base)
+    #   base.class_eval do
+    #     around_filter :handle_timecop_offset
+    #   end
+    # end
 
     # to be used as an around_filter
     def handle_timecop_offset

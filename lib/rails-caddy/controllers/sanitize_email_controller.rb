@@ -1,10 +1,6 @@
 module SanitizeEmailController
   
   def self.included(base)
-    base.class_eval do
-      # Make sure we don't reset our own time!
-      #skip_filter :handle_timecop_offset
-    end
     base.send(:include, Actions)
   end
 
