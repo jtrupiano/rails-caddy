@@ -7,9 +7,9 @@ module TimecopActionControllerExtensionsTestMethods
           @controller = TestController.new
         end
 
-        should "add :handle_timecop_offset as an around_filter" do
-          assert @controller.class.around_filters.include?(:handle_timecop_offset)
-        end
+        # should "add :handle_timecop_offset as an around_filter" do
+        #   assert @controller.class.around_filters.include?(:handle_timecop_offset)
+        # end
 
         context "session has been set" do
           setup do
