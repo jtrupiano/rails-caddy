@@ -2,6 +2,10 @@
 
 A developer's QA "caddy" that aids in QA'ing, debugging, and otherwise navigating your application during development and/or QA.
 
+== Rails Compatibility
+
+Tests cover rails 2.1.2, 2.2.2, and 2.3.2 specifically.  Previous releases on each minor version have not been explicitly tested, but I suspect they should all function equally well.
+
 == Usage
 
 RULE #1: DO NOT DEPLOY THIS TO PRODUCTION.  I WILL HAVE NO EMPATHY WHATSOEVER IF YOU DO NOT HEED MY WARNING.  THIS IS A VERY DANGEROUS GEM THAT WILL DEFINITELY SCREW YOU OVER IF YOU DEPLOY IT TO PRODUCTION.
