@@ -40,10 +40,6 @@ This process is not currently scripted, but following these steps will get you o
 
     RailsCaddy.define_routes!(map) if Object.const_defined?(:RailsCaddy)
 
-=== Caveats
-
-You'll need to make a slight adjustment to the procedure above if you 
-
 == Copyright
 
 Copyright (c) 2009 John Trupiano. See LICENSE for details.
