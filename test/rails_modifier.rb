@@ -14,6 +14,7 @@ class RailsModifier
       append(config_rb(version), nil, "config/environments/test.rb")
       append(config_rb(version), nil, "config/environments/development.rb")
       append(routes_rb, "ActionController::Routing::Routes.draw do |map|", "config/routes.rb")
+      remove('public/index.html')
       
       # Copy over tests
       %w(session_editing_controller timecop_controller timecop_action_controller_extensions sanitize_email_controller sanitize_email_action_controller_extensions).each do |file_prefix|
@@ -49,6 +50,10 @@ class RailsModifier
         File.open(filename, 'w') do |f|
           f.write(content)
         end
+      end
+      
+      def remove(filename)
+        FileUtils.rm(filename, :force => true)
       end
       
       def file_path(filename)
@@ -119,6 +124,7 @@ end
         <<-RUBY
   RailsCaddy.define_routes!(map) if Object.const_defined?(:RailsCaddy)
   #map.resources :frogs, :only => [:index], :member => [:abc, :def, :ghi]
+  map.root :controller => "frogs"
         RUBY
       end
   end
