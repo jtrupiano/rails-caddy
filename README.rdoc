@@ -40,6 +40,30 @@ This process is not currently scripted, but following these steps will get you o
 
     RailsCaddy.define_routes!(map) if Object.const_defined?(:RailsCaddy)
 
+== Dependencies
+
+rails-caddy is dependent on the {sanitize_email gem}[http://github.com/jtrupiano/sanitize_email/tree/master].  Unfortunately, for the time being you'll need to build and install that locally.  Why?  Because the dependency is on +sanitize_email+ and NOT <tt>jtrupiano-sanitize_email</tt>, the latter of which can be installed remotely.  Hopefully this will change soon (that's _your_ cue to fork and fix).
+
+== Building/Testing
+
+In order to run the tests, you'll want to build the gem.  Why?  Because <tt>rake test:rails_compatibility</tt> tests all supported versions of rails (see <b>Rails Compatibility</b>, above).  It does this by creating mini-Rails apps for each version and config-gem'ing rails-caddy (<tt>config.gem 'rails-caddy'</tt>).  If you don't build the gem and try to run the tests, you'll get an error telling you to <tt>run `rake gems:install`</tt>.
+
+The easiest way to build the gem is to install {technicalpickle's}[http://technicalpickles.com/] {jeweler gem}[http://github.com/technicalpickles/jeweler/tree/master]: <tt>sudo gem install jeweler</tt>.
+
+After jeweler is installed, you can build and install with some handy rake tasks:
+
+    rake build
+    rake install
+
+<b>n.b.</b> <tt>rake install</tt> uses +sudo+
+
+(Problems?  See *Dependencies*, above.)
+
+Now you can run your tests:
+
+    rake test:all                  # Run all test suites.
+    rake test:rails_compatibility  # Test all supported versions of rails.
+
 == Copyright
 
 Copyright (c) 2009 John Trupiano. See LICENSE for details.
