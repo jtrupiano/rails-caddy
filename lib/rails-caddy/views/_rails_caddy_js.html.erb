@@ -1,0 +1,88 @@
+<script type="text/javascript">
+  var RailsCaddyCookieStore = {
+    shouldOpenOnLoad: function() {
+      var all_cookies = $A(document.cookie.split('; '));
+      var our_cookie = all_cookies.find(function(cookie) {
+        return cookie.split('=')[0] == "rails_caddy"
+      });
+      
+      return our_cookie != undefined;
+    },
+    
+    removeCookie: function() {
+      // Set the expiration date in the past
+      document.cookie = "rails_caddy=off;expires=" + new Date(new Date().getTime() - 31536000000).toGMTString();
+    },
+    
+    setCookie: function() {
+      // Set the expiration date in the future
+      document.cookie = "rails_caddy=on;expires=" + new Date(new Date().getTime() + 31536000000).toGMTString();
+    }
+  };
+  
+  var RailsCaddy = {
+    
+    editors: {},
+
+    isExtended: false,
+    sessionVariableTemplate: new Template("<p>#{key}<br /> <strong><%= escape_javascript(rc_in_place_editor_field("\#{key}", "\#{value}")) %></strong><a href='javascript:void(0)' onclick='RailsCaddy.removeSessionVariable(\"#{key}\", this);' class='x'>x</a></p>"),
+    
+    init: function() {
+    	Event.observe('railsCaddyTab', 'click', RailsCaddy.slideSideBar, true);
+    	if (RailsCaddyCookieStore.shouldOpenOnLoad()) {
+    	  RailsCaddy.slideSideBar();
+    	}
+    },
+
+    slideSideBar: function() {
+
+    	new Effect.toggle('railsCaddyContents', 'blind', {scaleX: 'true', scaleY: 'true;', scaleContent: false});
+
+    	if (RailsCaddy.isExtended == 0) {
+    		new Effect.Fade('railsCaddyContents', { duration:1.0, from:0.0, to:1.0 });
+    		RailsCaddy.isExtended = true;
+    		RailsCaddyCookieStore.setCookie();
+    	}
+    	else {
+    		new Effect.Fade('railsCaddyContents', { duration:1.0, from:1.0, to:0.0 });
+    		RailsCaddy.isExtended = false;
+    		RailsCaddyCookieStore.removeCookie();
+    	}
+
+    },
+
+    scroll: function() {
+      $('railsCaddy').style.top = (window.scrollY + 100) + "px";
+    },
+    
+    sessionVariableEditor: function(key, value) {
+      if (!value) { value = "blank"; }
+      return RailsCaddy.sessionVariableTemplate.evaluate({key : key, value : value});
+    },
+    
+    addSessionVariable: function() {
+      var val = prompt("Enter the name of the new session variable:");
+      if (val) {
+        $('sessionObjects').insert(RailsCaddy.sessionVariableEditor(val, "blank"));
+        setTimeout("RailsCaddy.editors['" + val + "'].enterEditMode();", 100);
+      }
+    },
+    
+    removeSessionVariable: function(key, anchor) {
+      //alert('removing key: ' + key);
+      new Ajax.Request('<%= translated_remove_session_path %>' + key, {method: 'post', 
+        onSuccess: function(response) {
+          RailsCaddy.editors[key] = null;
+          $(anchor.parentNode).remove();
+        }
+      });
+    }
+  };
+
+  if (Event.observe === undefined) {
+    alert("It appears that the Prototype library has not been loaded.  rails_caddy currently requires Prototype.");
+  } else {
+    Event.observe(window, 'load',   RailsCaddy.init,   true);
+    Event.observe(window, 'scroll', RailsCaddy.scroll, true);
+  }
+</script>
