@@ -38,7 +38,7 @@
 
     	new Effect.toggle('railsCaddyContents', 'blind', {scaleX: 'true', scaleY: 'true;', scaleContent: false});
 
-    	if (RailsCaddy.isExtended == 0) {
+    	if (RailsCaddy.isExtended) {
     		new Effect.Fade('railsCaddyContents', { duration:1.0, from:0.0, to:1.0 });
     		RailsCaddy.isExtended = true;
     		RailsCaddyCookieStore.setCookie();
