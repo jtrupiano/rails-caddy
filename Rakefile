@@ -5,7 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "rails-caddy"
-    gem.summary = %Q{TODO}
+    gem.rubyforge_project = "johntrupiano"
+    gem.summary = %Q{A developer's QA "caddy" that aids in QA'ing, debugging, and otherwise navigating your application during development and/or QA.}
     gem.email = "jtrupiano@gmail.com"
     gem.homepage = "http://github.com/jtrupiano/rails-caddy"
     gem.authors = ["John Trupiano"]
@@ -61,11 +62,11 @@ begin
       desc "Publish RDoc to RubyForge."
       task :docs => [:rdoc] do
         config = YAML.load(
-            File.read(File.expand_path('~/.rubyforge/user-config.yml'))
+          File.read(File.expand_path('~/.rubyforge/user-config.yml'))
         )
 
         host = "#{config['username']}@rubyforge.org"
-        remote_dir = "/var/www/gforge-projects/rails-caddy/"
+        remote_dir = "/var/www/gforge-projects/johntrupiano/rails-caddy/"
         local_dir = 'rdoc'
 
         Rake::SshDirPublisher.new(host, remote_dir, local_dir).upload

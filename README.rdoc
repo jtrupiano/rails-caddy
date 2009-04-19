@@ -6,6 +6,12 @@ A developer's QA "caddy" that aids in QA'ing, debugging, and otherwise navigatin
 
 Tests cover rails 2.1.2, 2.2.2, and 2.3.2 specifically.  Previous releases on each minor version have not been explicitly tested, but I suspect they should all function equally well.
 
+== Installing
+
+The gem is hosted on RubyForge.
+
+    sudo gem install rails-caddy
+
 == Usage
 
 RULE #1: DO NOT DEPLOY THIS TO PRODUCTION.  I WILL HAVE NO EMPATHY WHATSOEVER IF YOU DO NOT HEED MY WARNING.  THIS IS A VERY DANGEROUS GEM THAT WILL DEFINITELY SCREW YOU OVER IF YOU DEPLOY IT TO PRODUCTION.
@@ -39,10 +45,14 @@ This process is not currently scripted, but following these steps will get you o
 * add to the top of config/routes.rb
 
     RailsCaddy.define_routes!(map) if Object.const_defined?(:RailsCaddy)
+    
+== RDoc
+
+* {http://johntrupiano.rubyforge.org/rails-caddy/}[http://johntrupiano.rubyforge.org/rails-caddy/]
 
 == Dependencies
 
-rails-caddy is dependent on the {sanitize_email gem}[http://github.com/jtrupiano/sanitize_email/tree/master].  Unfortunately, for the time being you'll need to build and install that locally.  Why?  Because the dependency is on +sanitize_email+ and NOT <tt>jtrupiano-sanitize_email</tt>, the latter of which can be installed remotely.  Hopefully this will change soon (that's _your_ cue to fork and fix).
+rails-caddy is dependent on the {sanitize_email gem}[http://github.com/jtrupiano/sanitize_email/tree/master].  Unfortunately, for the time being you'll need to build and install that locally.  Why?  Because the dependency is on +sanitize_email+ and NOT <tt>jtrupiano-sanitize_email</tt>, the latter of which can be installed remotely.  Hopefully this will change soon.
 
 == Building/Testing
 

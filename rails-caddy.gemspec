@@ -14,8 +14,9 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/jtrupiano/rails-caddy}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
   s.require_paths = ["lib"]
+  s.rubyforge_project = %q{johntrupiano}
   s.rubygems_version = %q{1.3.1}
-  s.summary = %q{TODO}
+  s.summary = %q{A developer's QA "caddy" that aids in QA'ing, debugging, and otherwise navigating your application during development and/or QA.}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
